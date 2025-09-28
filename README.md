@@ -9,18 +9,18 @@ This project is an **educational simulation of common cyberattacks**, designed f
 * Analyze defensive measures and security hardening effectiveness.
 
 **⚠️ Disclaimer:**
-This project is strictly for **educational purposes only**. Do **not** use these scripts on unauthorized systems. Misuse can be illegal and unethical.
+This repository is strictly for **educational purposes only**. Do **not** use these scripts on unauthorized systems. Misuse can be illegal and unethical.
 
 ---
 
 ## Features / Simulated Attacks
 
 | Attack                         | Description                                     | Notes                                                             |
-| ------------------------------ | ----------------------------------------------- | ----------------------------------------------------------------- |
-| **Ping Sweep (ICMP)**          | Network reconnaissance using ICMP echo requests | Detects active hosts in a subnet                                  |
+| ------------------------------ | ----------------------------------------------- | --------------------------------------------------------------------------- |
+| **Ping Sweep (ICMP)**          | Network reconnaissance using ICMP echo requests | Detects active hosts in a subnet                                            |
 | **TCP Port Scan**              | Scan for open ports on a target host            | Understands attack surface enumeration                            |
-| **SSH Brute Force Simulation** | Attempts password login with sample passwords   | Shows how brute force works and the importance of strong credentials        |
-| **Safe DoS Simulation**        | Simulated Denial of Service attack              | Safe for lab, monitors system behavior without harming production |
+| **SSH Brute Force Simulation** | Attempts password login with sample passwords   | Shows how brute force works and the importance of strong credentials       |
+| **Safe DoS Simulation**        | Simulated Denial of Service attack              | Safe for lab, monitors system behavior without damage                |
 
 ---
 
@@ -127,178 +127,120 @@ python attacks/dos_simulation.py --target 127.0.0.1 --port 80 --count 50
 
 ---
 
-## Safety & Ethics
+## 🔍 Extra Simulations (Command-Line Examples Only)
 
-* Only run simulations in a **controlled lab environment**.
-* **Do not target public servers or networks** without permission.
-* The project is meant for **learning, testing, and skill demonstration**.
+> **Safety first:** the commands below call powerful Kali/Linux tools. They are provided **for documentation and teaching only** — do **not** run them against systems you do not own or have explicit written permission to test. Use isolated lab VMs or intentionally vulnerable targets (e.g., `testphp.vulnweb.com`, DVWA).
+
+These simulations are documented with example commands, but **not scripted** for safety reasons.
+
+| Simulation                               | Command Example                                               |
+| ---------------------------------------- | ------------------------------------------------------------- |
+| **Firewall Bypass (fragmented packets)** | `nmap -f 192.168.56.101`                                      |
+| **SQL Injection Test**                   | `sqlmap -u "http://testphp.vulnweb.com/artists.php?artist=1"` |
+| **Network Sniffing**                     | `sudo tcpdump -i eth0 -nn -w /tmp/network_traffic.pcap`       |
+| **Web Vulnerability Scan**               | `nikto -h http://192.168.56.101`                              |
+| **Man-in-the-Middle (ARP spoofing)**     | `ettercap -T -M arp:remote /victim/ /gateway/`                |
 
 ---
 
+## ▶️ Execute Attack Simulations (Documentation only — RUN IN LABS ONLY)
 
+The commands below describe common penetration testing actions. They are included *for learning* — do **not** execute them on production or unauthorized networks.
 
-## 🛠️ Steps to Implement
-
-### Environment Setup
-
-Install Kali Linux:
-1. Download from the official website.
-2. Follow the installation instructions.
-
-Update System:
-```bash
-sudo apt update && sudo apt upgrade -y
-```
-
-Install Penetration Testing Tools:
-```bash
-sudo apt install nmap ncat hping3 ettercap-common ettercap-graphical bettercap wireshark
-sudo apt install hydra
-sudo apt install git
-sudo apt install sqlmap
-sudo apt install gobuster
-```
-
-### Execute Attack Simulations
-
-1. **Brute-Force Attack:**
-   - Description: Attempts to gain unauthorized access by trying numerous password combinations.
-   - Impact: Can compromise user accounts if weak passwords are used.
-   - Target: SSH service.
-   - Command:
+1. **Brute-Force Attack**
+   - **Description:** Attempts to gain unauthorized access by trying many password combinations.
+   - **Impact:** Can compromise user accounts if weak passwords are used.
+   - **Target:** SSH service.
+   - **Command (example):**
      ```bash
-     hydra -l <username> -P <password_list> ssh://<TARGET_IP>
+     # Hydra example (lab-only). Use a very small password list and localhost test server.
+     # Example: try 10 passwords against local SSH test instance
+     hydra -l testuser -P small-password-list.txt -t 4 ssh://127.0.0.1
      ```
-     
-2. **Firewall Bypass Attempt:**
-   - Description: Tests if firewall rules can be evaded.
-   - Impact: Potentially exposes services that should be protected by the firewall.
-   - Target: Open ports through firewall.
-   - Commands:
+     > *Only run against lab machines (localhost or VM). Never run against third-party hosts without explicit permission.*
 
-     Identify firewall rules:
+2. **Firewall Bypass Attempt**
+   - **Description:** Tests whether firewall rules can be evaded using packet fragmentation or other techniques.
+   - **Impact:** May expose services that should be protected by the firewall.
+   - **Target:** Open ports through the firewall.
+   - **Commands (examples):**
      ```bash
+     # Discover all ports
      nmap -p- <TARGET_IP>
-     ```
 
-     Attempt bypass:
-     ```bash
+     # Fragmented packets test (educational)
      nmap -f -p <TARGET_PORT> <TARGET_IP>
      ```
+
+3. **Denial of Service (DoS) Attack**
+   - **Description:** Overwhelms a service to make it unavailable.
+   - **Impact:** Service disruption or downtime.
+   - **Target:** Web server or application.
+   - **Commands (examples):**
+     ```bash
+     # hping3 (controlled example for lab only — do NOT run on public targets)
+     # Sends 50 SYN packets to port 80 with 1ms interval (controlled test).
+     # Use only in isolated lab VMs and with permission.
+     sudo hping3 -S -p 80 -c 50 -i u1000 <TARGET_IP>
+     ```
+
+4. **Man-in-the-Middle (MitM) Attack**
+   - **Description:** Intercepts and potentially modifies communication between two parties.
+   - **Impact:** Data leakage, credential capture, or session tampering.
+   - **Target:** Network traffic between clients and servers.
+   - **Commands (examples):**
+     ```bash
+     # MitM (Ettercap) — MANUAL LAB PROCEDURE ONLY
+     # This is included for documentation. Do not automate ARP spoofing in scripts.
+     # Run only in an isolated lab with explicit permission.
+     sudo ettercap -T -M arp:remote /<VICTIM_IP>/ /<GATEWAY_IP>/
      
-3. **Denial of Service (DoS) Attack:**
-   - Description: Overwhelms a service to make it unavailable.
-   - Impact: Service disruption or downtime.
-   - Target: Web server or application.
-   - Commands:
-
-     Using hping3:
-     ```bash
-     sudo hping3 --flood -p 80 <TARGET_IP>
-     ```
-   
-4. **Man-in-the-Middle (MitM) Attack:**
-   - Description: Intercepts and manipulates communication between two parties.
-   - Impact: Data leakage or alteration.
-   - Target: Network traffic between clients and servers.
-   - Commands:
-
-     Use Ettercap:
-     ```bash
-     sudo ettercap -T -M arp:remote /<TARGET_IP>/ /<GATEWAY_IP>/
+     # Capture traffic separately:
+     sudo tcpdump -i eth0 -w mitm_data.pcap
      ```
 
-     Capture traffic:
+5. **SQL Injection**
+   - **Description:** Injects SQL queries to manipulate a backend database.
+   - **Impact:** Data disclosure, unauthorized data modification, or complete DB compromise.
+   - **Target:** Vulnerable web application endpoints.
+   - **Command (example):**
      ```bash
-     sudo tcpdump -i eth0 -w /root/mitm_data.pcap
-     ```
-
-     Analyze with Wireshark:
-     ```bash
-     sudo wireshark /root/mitm_data.pcap
-     ```
-     
-5. **SQL Injection:**
-   - Description: Injects malicious SQL queries to manipulate a database.
-   - Impact: Unauthorized access to database or data corruption.
-   - Target: Web applications with SQL databases.
-   - Command:
-     ```bash
+     # Run sqlmap against a known test target only
      sqlmap -u "<TARGET_URL>" --dbs
      ```
 
-6. **Network Sniffing:**
-   - Description: Captures and analyzes network traffic to extract sensitive information.
-   - Impact: Exposure of unencrypted data.
-   - Target: Network traffic.
-   - Command:
+6. **Network Sniffing**
+   - **Description:** Captures and inspects network packets to discover sensitive information (credentials, sessions).
+   - **Impact:** Exposure of unencrypted data.
+   - **Target:** Network traffic on a chosen interface.
+   - **Command (example):**
      ```bash
      sudo tcpdump -i eth0 -w /root/network_traffic.pcap
      ```
 
-7. **Session Hijacking:**
-    - Description: Takes over an active user session.
-    - Impact: Unauthorized access to user accounts and data.
-    - Target: Web sessions.
-    - Command:
-      ```bash
-      sudo ettercap -T -M arp:remote /<TARGET_IP>/ /<GATEWAY_IP>/
-      ```
+7. **Web Application Scanning**
+   - **Description:** Automated scanning for common web vulnerabilities (XSS, SQLi, etc.).
+   - **Impact:** Identifies weaknesses that require mitigation.
+   - **Command (example):**
+     ```bash
+     nikto -h <TARGET_URL>
+     ```
 
-8. **Exploit Remote Code Execution (RCE):**
-    - Description: Exploits a vulnerability to execute arbitrary commands on a remote system.
-    - Impact: Full control over the remote system.
-    - Target: Remote servers with RCE vulnerabilities.
-    - Command:
-      ```bash
-      msfconsole
-      use exploit/linux/http/<exploit_module>
-      set RHOSTS <TARGET_IP>
-      exploit
-      ```
-      
-9. **Password Cracking:**
-    - Description: Uses various techniques to recover passwords from hashes.
-    - Impact: Compromise of user accounts.
-    - Target: Password hashes.
-    - Command:
-      ```bash
-      john --wordlist=<wordlist> <hash_file>
-      ```
+---
 
-10. **Wi-Fi Network Attack:**
-    - Description: Attacks Wi-Fi networks to crack passwords or intercept traffic.
-    - Impact: Unauthorized access to network and data.
-    - Target: Wi-Fi networks.
-    - Command:
-      ```bash
-      aircrack-ng -w <wordlist> -b <BSSID> <capture_file>
-      ```
+## ⚖️ Safety & Ethics
 
-11. **DNS Spoofing:**
-    - Description: Redirects DNS requests to malicious servers.
-    - Impact: Phishing or data interception.
-    - Target: DNS traffic.
-    - Command:
-      ```bash
-      sudo ettercap -T -M arp:remote /<TARGET_IP>/ /<DNS_SERVER_IP>/
-      ```
+This project is intended for **educational purposes only**. The commands and scripts included are for learning and simulation in **controlled lab environments**.
 
-12. **Web Application Scanning:**
-    - Description: Scans web applications for vulnerabilities.
-    - Impact: Identifies weaknesses for further exploitation.
-    - Target: Web applications.
-    - Command:
-      ```bash
-      nikto -h <TARGET_URL>
-      ```
+Please follow these rules when using the repository:
 
-## 📬 Contact 
+* **Always** use isolated lab environments (virtual machines, containers, or purposely provisioned test networks).  
+* **Never** run attacks against systems, networks, or services for which you do not have explicit written permission. Unauthorized testing may be illegal and unethical.  
+* Prefer intentionally vulnerable targets (for example `testphp.vulnweb.com`, DVWA) when learning or demonstrating techniques.  
+* Keep logs and capture files (PCAPs) for reproducible reporting — **do not** commit captures, credentials, or other sensitive data to source control.  
+* Sanitize any results you share publicly: remove or anonymize IP addresses, hostnames, credentials, session tokens, and other sensitive artifacts.  
+* Use the examples in this repository as **educational references** only. If you are uncertain whether a test is permitted, stop and obtain written authorization before proceeding.
 
-If you have any questions or suggestions, feel free to reach out:
+By using this repository you agree to follow these ethical guidelines and legal obligations.
 
-- ✉️ Email: tania.fatmawati20@gmail.com
-- 🔗 LinkedIn: linkedin.com/in/tania-fatma-wati/
-- 💻 GitHub: github.com/taniafatmawati
-
-Thank you for exploring my Cyber Attack Simulation documentation!
+---
