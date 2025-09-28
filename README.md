@@ -1,10 +1,106 @@
-# Cyber Attack Simulation for Penetration Testing on Kali Linux 🚀
+# 🚀 Cyber Attack Simulation for Penetration Testing on Kali Linux
 
-Welcome to my Cyber Attack Simulation documentation! This documentation provides a comprehensive guide to simulating various cyberattacks using Kali Linux tools to evaluate the effectiveness of security measures on a target server.
+## Overview
 
-## 🌟 Introduction 
+This project is an educational simulation of common cyberattacks, implemented for learning purposes and to understand penetration testing techniques. The goal is to:
 
-This documentation focuses on simulating specific cyberattacks to assess the effectiveness of security hardening measures. Each simulation tests different aspects of a server’s defense mechanisms, providing valuable insights into potential vulnerabilities and the effectiveness of security controls.
+- Understand vulnerabilities in servers and networks.
+- Learn how common attacks work in controlled environments.
+- Analyze defensive measures and security hardening effectiveness.
+
+**⚠️ Disclaimer:**  
+This project is strictly for educational purposes. Do not use these scripts on unauthorized systems. Misuse can be illegal and unethical.
+
+---
+
+## Features / Simulated Attacks
+
+1. **Ping Sweep (ICMP)**
+   - Simulates network reconnaissance using ICMP echo requests.
+   - Detects active hosts in a subnet.
+
+2. **TCP Port Scan**
+   - Simulates a basic TCP port scan to identify open ports on a target host.
+   - Helps understand attack surface enumeration.
+
+3. **SSH Brute Force (Simulation)**
+   - Attempts password login with a small list of sample passwords on a local test server.
+   - Shows how brute force works and the importance of strong credentials.
+
+4. **Safe DoS Simulation**
+   - Demonstrates a Denial of Service attack in a controlled local test environment.
+   - Monitors system behavior without harming production services.
+
+---
+
+## Requirements
+
+- **Kali Linux** (tested on 2023.3+)
+- Python 3.10+
+- `scapy` for packet crafting and analysis
+- `paramiko` for SSH simulation
+- `socket` and `subprocess` modules for network tasks
+
+---
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/taniafatmawati/cyber-attack-simulation-kali.git
+cd cyber-attack-simulation-kali
+````
+
+2. Create virtual environment:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+---
+
+## Usage Examples
+
+**Ping Sweep Example:**
+
+```bash
+python attacks/ping_sweep.py --subnet 192.168.56.0/24
+```
+
+**Port Scan Example:**
+
+```bash
+python attacks/port_scan.py --target 192.168.56.101 --ports 20-1024
+```
+
+**SSH Brute Force Simulation Example:**
+
+```bash
+python attacks/brute_force_ssh.py --host 127.0.0.1 --user testuser --passwords passwords.txt
+```
+
+**Safe DoS Simulation Example:**
+
+```bash
+python attacks/dos_simulation.py --target 127.0.0.1 --count 50
+```
+
+---
+
+## Learning Outcomes
+
+* Understand network reconnaissance and enumeration.
+* Learn the mechanics behind brute force and DoS attacks.
+* Explore how defensive measures can mitigate common attacks.
+* Enhance Python scripting skills for cybersecurity applications.
+
+---
+
+
+
 
 ## 🛠️ Steps to Implement
 
