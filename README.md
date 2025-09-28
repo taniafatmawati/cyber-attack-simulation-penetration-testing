@@ -1,45 +1,38 @@
 # 🚀 Cyber Attack Simulation for Penetration Testing on Kali Linux
 
-## Overview
+## Project Overview
 
-This project is an educational simulation of common cyberattacks, implemented for learning purposes and to understand penetration testing techniques. The goal is to:
+This project is an **educational simulation of common cyberattacks**, designed for learning purposes and to understand penetration testing techniques. The goals are to:
 
-- Understand vulnerabilities in servers and networks.
-- Learn how common attacks work in controlled environments.
-- Analyze defensive measures and security hardening effectiveness.
+* Understand vulnerabilities in servers and networks.
+* Learn how common attacks work in **controlled lab environments**.
+* Analyze defensive measures and security hardening effectiveness.
 
-**⚠️ Disclaimer:**  
-This project is strictly for educational purposes. Do not use these scripts on unauthorized systems. Misuse can be illegal and unethical.
+**⚠️ Disclaimer:**
+This project is strictly for **educational purposes only**. Do **not** use these scripts on unauthorized systems. Misuse can be illegal and unethical.
 
 ---
 
 ## Features / Simulated Attacks
 
-1. **Ping Sweep (ICMP)**
-   - Simulates network reconnaissance using ICMP echo requests.
-   - Detects active hosts in a subnet.
-
-2. **TCP Port Scan**
-   - Simulates a basic TCP port scan to identify open ports on a target host.
-   - Helps understand attack surface enumeration.
-
-3. **SSH Brute Force (Simulation)**
-   - Attempts password login with a small list of sample passwords on a local test server.
-   - Shows how brute force works and the importance of strong credentials.
-
-4. **Safe DoS Simulation**
-   - Demonstrates a Denial of Service attack in a controlled local test environment.
-   - Monitors system behavior without harming production services.
+| Attack                         | Description                                     | Notes                                                             |
+| ------------------------------ | ----------------------------------------------- | ----------------------------------------------------------------- |
+| **Ping Sweep (ICMP)**          | Network reconnaissance using ICMP echo requests | Detects active hosts in a subnet                                  |
+| **TCP Port Scan**              | Scan for open ports on a target host            | Understands attack surface enumeration                            |
+| **SSH Brute Force Simulation** | Attempts password login with sample passwords   | Shows how brute force works and the importance of strong credentials        |
+| **Safe DoS Simulation**        | Simulated Denial of Service attack              | Safe for lab, monitors system behavior without harming production |
 
 ---
 
 ## Requirements
 
 - **Kali Linux** (tested on 2023.3+)
-- Python 3.10+
-- `scapy` for packet crafting and analysis
-- `paramiko` for SSH simulation
-- `socket` and `subprocess` modules for network tasks
+- **Python 3.10+**
+- Python packages:
+
+  * `scapy` for packet crafting and analysis
+  * `paramiko` for SSH simulation
+  * `socket` and `subprocess` (standard library)
 
 ---
 
@@ -48,15 +41,20 @@ This project is strictly for educational purposes. Do not use these scripts on u
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/taniafatmawati/cyber-attack-simulation-kali.git
+git clone https://github.com/yourusername/cyber-attack-simulation-kali.git
 cd cyber-attack-simulation-kali
-````
+```
 
-2. Create virtual environment:
+2. Create and activate virtual environment:
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
+```
+
+3. Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
@@ -64,41 +62,78 @@ pip install -r requirements.txt
 
 ## Usage Examples
 
-**Ping Sweep Example:**
+### 1. Ping Sweep (ICMP)
 
 ```bash
 python attacks/ping_sweep.py --subnet 192.168.56.0/24
 ```
 
-**Port Scan Example:**
+**Expected Output:**
+
+```
+Starting ping sweep on 192.168.56.0/24...
+[+] Host 192.168.56.101 is up.
+[+] Host 192.168.56.102 is up.
+...
+```
+
+---
+
+### 2. TCP Port Scan
 
 ```bash
 python attacks/port_scan.py --target 192.168.56.101 --ports 20-1024
 ```
 
-**SSH Brute Force Simulation Example:**
+**Expected Output:**
+
+```
+Scanning ports on 192.168.56.101...
+[+] Port 22 is open
+[+] Port 80 is open
+[+] Port 443 is open
+...
+```
+
+---
+
+### 3. SSH Brute Force Simulation
 
 ```bash
 python attacks/brute_force_ssh.py --host 127.0.0.1 --user testuser --passwords passwords.txt
 ```
 
-**Safe DoS Simulation Example:**
+**Expected Output:**
 
-```bash
-python attacks/dos_simulation.py --target 127.0.0.1 --count 50
+```
+Trying password: 1234
+Trying password: password
+[+] Success! Password found: test123
 ```
 
 ---
 
-## Learning Outcomes
+### 4. Safe DoS Simulation
 
-* Understand network reconnaissance and enumeration.
-* Learn the mechanics behind brute force and DoS attacks.
-* Explore how defensive measures can mitigate common attacks.
-* Enhance Python scripting skills for cybersecurity applications.
+```bash
+python attacks/dos_simulation.py --target 127.0.0.1 --port 80 --count 50
+```
+
+**Expected Output:**
+
+```
+[+] Simulated 50 requests to 127.0.0.1:80
+```
 
 ---
 
+## Safety & Ethics
+
+* Only run simulations in a **controlled lab environment**.
+* **Do not target public servers or networks** without permission.
+* The project is meant for **learning, testing, and skill demonstration**.
+
+---
 
 
 
