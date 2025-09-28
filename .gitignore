@@ -1,1 +1,21 @@
+# Python / venv
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
 
+# IDEs / editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs, pcap outputs
+*.log
+capture.pcap
