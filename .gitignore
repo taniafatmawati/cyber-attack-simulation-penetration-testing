@@ -17,5 +17,14 @@ __pycache__/
 Thumbs.db
 
 # Logs, pcap outputs
+logs/
 *.log
+*.pcap
 capture.pcap
+
+# Credentials / secrets (common patterns)
+passwords.txt
+*.key
+*.pem
+.env
+secrets.*
