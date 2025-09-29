@@ -2,14 +2,14 @@
 import socket
 import subprocess
 
-def is_host_up(ip):
+def is_host_up(ip, timeout=1):
     """
     Simple ICMP ping check using system ping command.
     Returns True if host responds, False otherwise.
     """
     try:
         output = subprocess.check_output(
-            ["ping", "-c", "1", "-W", "1", ip],
+            ["ping", "-c", "1", "-W", str(timeout), ip],
             stderr=subprocess.DEVNULL
         )
         return True
@@ -29,4 +29,3 @@ def check_port(ip, port, timeout=0.5):
         return result == 0
     except:
         return False
-
