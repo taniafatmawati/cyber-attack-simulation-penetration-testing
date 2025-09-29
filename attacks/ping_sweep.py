@@ -11,7 +11,7 @@ import ipaddress
 
 def ping_sweep(subnet, timeout=1):
     logger = setup_logger("ping_sweep")
-    logger.info(f"Starting ping sweep on {subnet}")
+    logger.info(f"Starting ping sweep on {subnet} (timeout={timeout}s)")
 
     try:
         net = ipaddress.ip_network(subnet, strict=False)
@@ -21,7 +21,7 @@ def ping_sweep(subnet, timeout=1):
 
     for ip in net.hosts():
         ip_str = str(ip)
-        up = is_host_up(ip_str)
+        up = is_host_up(ip_str, timeout=timeout)
         if up:
             logger.info(f"[+] Host {ip_str} is UP")
         else:
@@ -34,7 +34,7 @@ def main():
     parser = argparse.ArgumentParser(description="Ping Sweep (ICMP) - lab-only")
     parser.add_argument("--subnet", required=True, help="Target subnet (e.g., 192.168.56.0/24)")
     parser.add_argument("--confirm", action="store_true", help="Confirm you will run this in a lab environment")
-    parser.add_argument("--timeout", type=int, default=1, help="ICMP timeout in seconds (passed to helper)")
+    parser.add_argument("--timeout", type=int, default=1, help="ICMP timeout in seconds (default: 1)")
     args = parser.parse_args()
 
     if not args.confirm:
