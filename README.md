@@ -96,8 +96,8 @@ mkdir -p logs
 
 **Example:**
 
-![Ping Sweep Terminal Output](screenshots/ping-sweep-1.png)
-![Ping Sweep Terminal Output](screenshots/ping-sweep-2.png)
+![Ping Sweep Terminal Output](screenshots/ping-sweep-1.PNG)
+![Ping Sweep Terminal Output](screenshots/ping-sweep-2.PNG)
 
 ```bash
 python -m attacks.ping_sweep --subnet 127.0.0.0/24 --confirm --timeout 1
@@ -121,7 +121,7 @@ python -m attacks.ping_sweep --subnet 127.0.0.0/24 --confirm --timeout 1
 
 **Example:**
 
-![Port Scan Terminal Output](screenshots/port-scan.png)
+![Port Scan Terminal Output](screenshots/port-scan.PNG)
 
 ```bash
 python -m attacks.port_scan --target 127.0.0.1 --ports 22,80,443 --confirm
@@ -154,8 +154,8 @@ python -m attacks.port_scan --target 127.0.0.1 --ports 22,80,443 --confirm
 
 **Example:**
 
-![SSH Brute Force Terminal Output](screenshots/ssh-brute-force-1.png)
-![SSH Brute Force Terminal Output](screenshots/ssh-brute-force-2.png)
+![SSH Brute Force Terminal Output](screenshots/ssh-brute-force-1.PNG)
+![SSH Brute Force Terminal Output](screenshots/ssh-brute-force-2.PNG)
 
 ```bash
 python -m attacks.brute_force_ssh --host 127.0.0.1 --user testuser --passwords passwords.txt --confirm
@@ -180,7 +180,7 @@ python -m attacks.brute_force_ssh --host 127.0.0.1 --user testuser --passwords p
 
 **Example:**
 
-![DoS Simulation Terminal Output](screenshots/dos-simulation.png)
+![DoS Simulation Terminal Output](screenshots/dos-simulation.PNG)
 
 ```bash
 sudo ./venv/bin/python -m attacks.dos_simulation --target 127.0.0.1 --port 80 --duration 5 --interval 0.01 --confirm
