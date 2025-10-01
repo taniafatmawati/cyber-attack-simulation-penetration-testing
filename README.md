@@ -96,6 +96,8 @@ mkdir -p logs
 
 **Example:**
 
+![Ping Sweep Terminal Output](screenshots/ping-sweep.png)
+
 ```bash
 python -m attacks.ping_sweep --subnet 127.0.0.0/24 --confirm --timeout 1
 ```
@@ -117,6 +119,8 @@ python -m attacks.ping_sweep --subnet 127.0.0.0/24 --confirm --timeout 1
 **Description:** Scan a target host for open TCP ports (connect-style).
 
 **Example:**
+
+![Port Scan Terminal Output](screenshots/port-scan.png)
 
 ```bash
 python -m attacks.port_scan --target 127.0.0.1 --ports 22,80,443 --confirm
@@ -149,6 +153,8 @@ python -m attacks.port_scan --target 127.0.0.1 --ports 22,80,443 --confirm
 
 **Example:**
 
+![SSH Brute Force Terminal Output](screenshots/ssh-brute-force.png)
+
 ```bash
 python -m attacks.brute_force_ssh --host 127.0.0.1 --user testuser --passwords passwords.txt --confirm
 ```
@@ -171,6 +177,8 @@ python -m attacks.brute_force_ssh --host 127.0.0.1 --user testuser --passwords p
 **Description:** Simulated SYN flood, uses scapy raw packets (requires root or CAP_NET_RAW).
 
 **Example:**
+
+![DoS Simulation Terminal Output](screenshots/dos-simulation.png)
 
 ```bash
 sudo ./venv/bin/python -m attacks.dos_simulation --target 127.0.0.1 --port 80 --duration 5 --interval 0.01 --confirm
