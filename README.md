@@ -96,7 +96,8 @@ mkdir -p logs
 
 **Example:**
 
-![Ping Sweep Terminal Output](screenshots/ping-sweep.png)
+![Ping Sweep Terminal Output](screenshots/ping-sweep-1.png)
+![Ping Sweep Terminal Output](screenshots/ping-sweep-2.png)
 
 ```bash
 python -m attacks.ping_sweep --subnet 127.0.0.0/24 --confirm --timeout 1
@@ -153,7 +154,8 @@ python -m attacks.port_scan --target 127.0.0.1 --ports 22,80,443 --confirm
 
 **Example:**
 
-![SSH Brute Force Terminal Output](screenshots/ssh-brute-force.png)
+![SSH Brute Force Terminal Output](screenshots/ssh-brute-force-1.png)
+![SSH Brute Force Terminal Output](screenshots/ssh-brute-force-2.png)
 
 ```bash
 python -m attacks.brute_force_ssh --host 127.0.0.1 --user testuser --passwords passwords.txt --confirm
