@@ -17,10 +17,10 @@ This repository is strictly for **educational purposes only**. Do **not** use th
 
 | Attack                         | Description                                     | Notes                                                   |
 | ------------------------------ | ----------------------------------------------- | ------------------------------------------------------- |
-| **Ping Sweep (ICMP)**          | Network reconnaissance using ICMP echo requests | Detects active hosts in a subnet (lab-only)             |
-| **TCP Port Scan**              | Scan for open ports on a target host            | Understands attack surface enumeration                  |
-| **SSH Brute Force Simulation** | Attempts password login with sample passwords   | Shows brute force risks with weak credentials           |
-| **Safe DoS Simulation**        | Simulated Denial of Service attack              | Safe for lab, monitors system behavior without damage   |
+| **Ping Sweep (ICMP)**          | Network reconnaissance using ICMP echo requests | Detects active hosts in a subnet (lab-only)            |
+| **TCP Port Scan**              | Scan for open ports on a target host            | Connect-style scan using socket.connect()            |
+| **SSH Brute Force Simulation** | Attempts password login with sample passwords   | Shows brute force risks with weak credentials       |
+| **Safe DoS Simulation**        | Simulated Denial of Service attack              | Sends raw SYN packets using Scapy (requires root)       |
 
 ---
 
@@ -66,7 +66,29 @@ mkdir -p logs
 
 ---
 
+## Important usage notes (read first)
+
+* **Always run commands from the project root** (the directory that contains `attacks/` and `utils/`).
+* **When running package modules use the module name without `.py`**. Example:
+
+  ```bash
+  # correct
+  python -m attacks.port_scan --target 127.0.0.1 --ports 22,80 --confirm
+
+  # incorrect (do not add .py)
+  python -m attacks.port_scan.py ...
+  ```
+* If you prefer to `python attacks/script.py` directly, either:
+
+  * set `PYTHONPATH` to project root: `PYTHONPATH=$(pwd) python attacks/ping_sweep.py ...`, or
+  * add a small `sys.path` snippet at the top of the script (not recommended for production).
+* **DoS simulation**: Raw-packet mode (SYN flood) uses `scapy` and **requires root** (or `CAP_NET_RAW`). Run with `sudo` or grant capability to the Python binary if you understand the risks.
+
+---
+
 ## CLI Usage
+
+> All example commands assume you are in the **project root** and virtualenv is active (`source venv/bin/activate`).
 
 ### 1. Ping Sweep (ICMP)
 
@@ -81,6 +103,10 @@ python -m attacks.ping_sweep --subnet 127.0.0.0/24 --confirm --timeout 1
 * `--subnet` — target subnet to scan (CIDR), required.
 * `--timeout` — ICMP timeout in seconds (default: 1).
 * `--confirm` — required safety flag; script exits if not present.
+
+**Notes:**
+
+* On some systems raw ICMP may require privileges or the `ping` binary behavior may differ. This script uses the system `ping` command; if you see permission errors check your environment.
 
 **Logs:** Output is written to `logs/ping_sweep.log`.
 
@@ -108,6 +134,11 @@ python -m attacks.port_scan --target 127.0.0.1 --ports 22,80,443 --confirm
 * Range: `1-1024`
 * Combination: `22,80,100-110`
 
+**Notes:**
+
+* This scanner uses `socket.connect()` which will show `Connection refused` if nothing is listening, and `timeout` if packets are dropped by firewall rules.
+* If you want more verbose logs while debugging, modify `setup_logger(..., level=logging.DEBUG)` or add a `--debug` flag (recommended patch).
+
 **Logs:** Output is written to `logs/port_scan.log`.
 
 ---
@@ -127,18 +158,22 @@ python -m attacks.brute_force_ssh --host 127.0.0.1 --user testuser --passwords p
 * `--passwords` — optional path to password list file
 * `--confirm` — required safety flag
 
+**Security & etiquette:**
+
+* Use very small lists in lab (demo only). Do not run brute-force attacks on systems without explicit written permission.
+
 **Logs:** Output is written to `logs/brute_force_ssh.log`.
 
 ---
 
 ### 4. Safe DoS Simulation
 
-**Description:** Simulated SYN flood with throttling (lab-only).
+**Description:** Simulated SYN flood, uses scapy raw packets (requires root or CAP_NET_RAW).
 
-**Usage:**
+**Example:**
 
 ```bash
-python -m attacks.dos_simulation --target 127.0.0.1 --port 80 --duration 5 --interval 0.01 --confirm
+sudo ./venv/bin/python -m attacks.dos_simulation --target 127.0.0.1 --port 80 --duration 5 --interval 0.01 --confirm
 ```
 
 * `--target` — target host (default `127.0.0.1`)
@@ -146,6 +181,11 @@ python -m attacks.dos_simulation --target 127.0.0.1 --port 80 --duration 5 --int
 * `--duration` — duration in seconds (default 5)
 * `--interval` — interval between packets in seconds (default 0.01)
 * `--confirm` — required safety flag
+
+**Privilege notes:**
+
+* If you attempt raw mode without root, you will get `PermissionError: [Errno 1] Operation not permitted`.
+* To run raw mode either run Python as root (example above) or give python binary `CAP_NET_RAW` capability with `sudo setcap cap_net_raw+ep $(readlink -f ./venv/bin/python)` (remember to revoke capability after testing).
 
 **Logs:** Output is written to `logs/dos_simulation.log`.
 
