@@ -41,8 +41,8 @@ This repository is strictly for **educational purposes only**. Do **not** use th
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/taniafatmawati/cyber-attack-simulation-kali.git
-cd cyber-attack-simulation-kali
+git clone https://github.com/taniafatmawati/cyber-attack-simulation-penetration-testing.git
+cd cyber-attack-simulation-penetration-testing
 ```
 
 2. Create and activate virtual environment:
