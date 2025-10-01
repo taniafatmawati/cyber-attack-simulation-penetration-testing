@@ -41,7 +41,7 @@ This repository is strictly for **educational purposes only**. Do **not** use th
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/cyber-attack-simulation-kali.git
+git clone https://github.com/taniafatmawati/cyber-attack-simulation-kali.git
 cd cyber-attack-simulation-kali
 ```
 
