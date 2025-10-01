@@ -75,7 +75,7 @@ mkdir -p logs
 **Example:**
 
 ```bash
-python attacks/ping_sweep.py --subnet 127.0.0.0/24 --confirm --timeout 1
+python -m attacks.ping_sweep --subnet 127.0.0.0/24 --confirm --timeout 1
 ```
 
 * `--subnet` — target subnet to scan (CIDR), required.
@@ -93,7 +93,7 @@ python attacks/ping_sweep.py --subnet 127.0.0.0/24 --confirm --timeout 1
 **Example:**
 
 ```bash
-python attacks/port_scan.py --target 127.0.0.1 --ports 22,80,443 --confirm
+python -m attacks.port_scan --target 127.0.0.1 --ports 22,80,443 --confirm
 ```
 
 * `--target` — target IP address (required)
@@ -119,7 +119,7 @@ python attacks/port_scan.py --target 127.0.0.1 --ports 22,80,443 --confirm
 **Example:**
 
 ```bash
-python attacks/brute_force_ssh.py --host 127.0.0.1 --user testuser --passwords passwords.txt --confirm
+python -m attacks.brute_force_ssh --host 127.0.0.1 --user testuser --passwords passwords.txt --confirm
 ```
 
 * `--host` — target host (default `127.0.0.1`)
@@ -138,7 +138,7 @@ python attacks/brute_force_ssh.py --host 127.0.0.1 --user testuser --passwords p
 **Usage:**
 
 ```bash
-python attacks/dos_simulation.py --target 127.0.0.1 --port 80 --duration 5 --interval 0.01 --confirm
+python -m attacks.dos_simulation --target 127.0.0.1 --port 80 --duration 5 --interval 0.01 --confirm
 ```
 
 * `--target` — target host (default `127.0.0.1`)
