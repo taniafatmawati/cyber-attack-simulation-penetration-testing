@@ -15,12 +15,12 @@ This repository is strictly for **educational purposes only**. Do **not** use th
 
 ## Features / Simulated Attacks
 
-| Attack                         | Description                                     | Notes                                                             |
-| ------------------------------ | ----------------------------------------------- | --------------------------------------------------------------------------- |
-| **Ping Sweep (ICMP)**          | Network reconnaissance using ICMP echo requests | Detects active hosts in a subnet                                            |
-| **TCP Port Scan**              | Scan for open ports on a target host            | Understands attack surface enumeration                            |
-| **SSH Brute Force Simulation** | Attempts password login with sample passwords   | Shows how brute force works and the importance of strong credentials       |
-| **Safe DoS Simulation**        | Simulated Denial of Service attack              | Safe for lab, monitors system behavior without damage                |
+| Attack                         | Description                                     | Notes                                                          |
+| ------------------------------ | ----------------------------------------------- | -------------------------------------------------------------- |
+| **Ping Sweep (ICMP)**          | Network reconnaissance using ICMP echo requests | Detects active hosts in a subnet (lab-only)                |
+| **TCP Port Scan**              | Scan for open ports on a target host            | Understands attack surface enumeration               |
+| **SSH Brute Force Simulation** | Attempts password login with sample passwords   | Shows brute force risks with weak credentials               |
+| **Safe DoS Simulation**        | Simulated Denial of Service attack              | Safe for lab, monitors system behavior without damage   |
 
 ---
 
@@ -57,6 +57,167 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+
+4. Create `logs` directory (logger will write here):
+
+```bash
+mkdir -p logs
+```
+
+---
+
+## CLI Usage: Ping Sweep & Port Scan (lab-only)
+
+Two CLI-ready scripts are included under `attacks/`:
+
+* `attacks/ping_sweep.py` — ICMP ping sweep (requires `--confirm`)
+* `attacks/port_scan.py` — TCP connect-style port scan (requires `--confirm`)
+
+> **Safety note:** Both scripts require `--confirm` to actually execute. This protects against accidental scans. Always run these only in an isolated lab environment (VMs, containers, test networks) and never against systems you do not own or have explicit permission to test.
+
+### Ping Sweep (ICMP)
+
+**Description:** Scan a subnet and report which hosts respond to ICMP.
+
+**Usage:**
+
+```bash
+python attacks/ping_sweep.py --subnet 192.168.56.0/24 --confirm
+```
+
+**Options:**
+
+* `--subnet` — subnet to scan (CIDR), required.
+* `--timeout` — ICMP timeout in seconds (default 1).
+* `--confirm` — required safety flag; script exits if not present.
+
+**Example:**
+
+```bash
+python attacks/ping_sweep.py --subnet 127.0.0.0/24 --confirm --timeout 1
+```
+
+**Logs:** Output is written to `logs/ping_sweep.log` (and streamed to console).
+
+---
+
+### Port Scan (TCP connect)
+
+**Description:** Scan a target host for open TCP ports (connect-style).
+
+**Usage:**
+
+```bash
+python attacks/port_scan.py --target 127.0.0.1 --ports 1-1024 --confirm
+```
+
+**Ports format supported:**
+
+* Single port: `22`
+* Comma-separated: `22,80,443`
+* Range: `1-1024`
+* Combination: `22,80,100-110`
+
+**Options:**
+
+* `--target` — target IP address (required)
+* `--ports` — ports or ranges (default: 1-1024)
+* `--timeout` — socket timeout per connection (seconds), default 0.5
+* `--confirm` — required safety flag
+
+**Example:**
+
+```bash
+python attacks/port_scan.py --target 192.168.56.101 --ports 22,80,443 --confirm
+```
+
+**Logs:** Output is written to `logs/port_scan.log` (and streamed to console).
+
+---
+
+### Example demo workflow (two terminals)
+
+**Terminal A** (Analyzer / Logger): no special action — scripts log to `logs/` automatically.
+
+**Terminal B** (Run scans):
+
+```bash
+# Ping sweep demo
+python attacks/ping_sweep.py --subnet 192.168.56.0/24 --confirm
+
+# Quick port scan demo
+python attacks/port_scan.py --target 127.0.0.1 --ports 22,80,443 --confirm
+```
+
+After each run, check logs for saved results:
+
+```bash
+ls -l logs/
+tail -n 200 logs/ping_sweep.log
+tail -n 200 logs/port_scan.log
+```
+
+---
+
+## CLI Usage: SSH Brute Force Simulation (lab-only)
+
+**Description:** Attempts SSH logins with a short password list (default or provided). Uses `paramiko`.
+
+**Usage:**
+
+```bash
+python attacks/brute_force_ssh.py --host 127.0.0.1 --user testuser --passwords passwords.txt --confirm
+```
+
+**Options:**
+
+* `--host` — target host (default `127.0.0.1`)
+* `--user` — username (default `testuser`)
+* `--passwords` — optional path to password list file
+* `--confirm` — required safety flag
+
+**Logs:** Output is written to `logs/brute_force_ssh.log`.
+
+---
+
+## CLI Usage: Safe DoS Simulation (lab-only)
+
+**Description:** Sends throttled SYN packets to simulate DoS. Defaults to loopback.
+
+**Usage:**
+
+```bash
+python attacks/dos_simulation.py --target 127.0.0.1 --port 80 --duration 5 --interval 0.01 --confirm
+```
+
+**Options:**
+
+* `--target` — target host (default `127.0.0.1`)
+* `--port` — target port (default 80)
+* `--duration` — duration in seconds (default 5)
+* `--interval` — interval between packets in seconds (default 0.01)
+* `--confirm` — required safety flag
+
+**Logs:** Output is written to `logs/dos_simulation.log`.
+
+---
+
+## 🔍 Extra Simulations (Command-Line Examples Only)
+
+> **Safety first:** the commands below call powerful Kali/Linux tools. They are provided **for documentation and teaching only** — do **not** run them against systems you do not own or have explicit written permission to test. Use isolated lab VMs or intentionally vulnerable targets (e.g., `testphp.vulnweb.com`, DVWA).
+
+(simulations list unchanged…)
+
+---
+
+## ⚖️ Safety & Ethics
+
+This project is intended for **educational purposes only**. The commands and scripts included are for learning and simulation in **controlled lab environments**.
+
+(unchanged)
+
+```
+
 
 ---
 
