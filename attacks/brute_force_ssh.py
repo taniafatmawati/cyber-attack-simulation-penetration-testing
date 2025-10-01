@@ -29,6 +29,11 @@ def brute_force_ssh(ip="127.0.0.1", port=22, username="testuser", passwords=None
             logger.warning(f"[-] Failed: {username}:{pwd}")
         except Exception as e:
             logger.error(f"[!] Error: {e}")
+        finally:
+            try:
+                client.close()
+            except:
+                pass
         time.sleep(0.2)
 
     logger.info("Brute-force simulation finished. No password matched.")
@@ -47,8 +52,12 @@ def main():
 
     passwords = None
     if args.passwords:
-        with open(args.passwords, "r") as f:
-            passwords = [l.strip() for l in f if l.strip()]
+        try:
+            with open(args.passwords, "r") as f:
+                passwords = [l.strip() for l in f if l.strip()]
+        except FileNotFoundError:
+            print(f"[!] Password file not found: {args.passwords}")
+            return
 
     brute_force_ssh(ip=args.host, port=22, username=args.user, passwords=passwords)
 
